@@ -39,9 +39,40 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
+// Creating a constructor function
+// it takes three properties name, age, and stomach which is an empty array
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+}
+
+// Create an eat method (function) that gives the person th ability to eat something
+// Has a param of something that we can pass food into
+// If the stomach length is < 10 the person can eat
+// We want to push the argument of something edible to the array (stomach)
+
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
 
 }
+
+Person.prototype.eat = function(food){
+  if(this.stomach.length < 10){
+    this.stomach.push(food);
+  }
+}
+
+Person.prototype.poop = function(){
+  this.stomach = [];
+}
+
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`;
+}
+
 
 /*
   TASK 2
@@ -57,8 +88,34 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
 
+Car.prototype.fill = function(gallons){
+  if(typeof(gallons) === typeof(0)){
+    this.tank += gallons;
+  }
+}
+
+Car.prototype.drive = function(distance){
+  if(typeof(distance) === typeof(0)){
+    const gallonsUsedTemp = distance / this.milesPerGallon;
+    if(this.tank - gallonsUsedTemp < 0){
+      const realDistance = Math.floor((this.tank - gallonsUsedTemp) + distance);
+      const realGallonsUsed = realDistance / this.milesPerGallon;
+      this.odometer += realDistance;
+      this.tank = 0;
+      return `I ran out of fuel at ${this.odometer} miles!`
+    }
+    else{
+      this.odometer += distance;
+      this.tank -= gallonsUsedTemp;
+    }
+  }
 }
 
 /*
@@ -68,18 +125,25 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
 
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
+}
+
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function(){
+  return `Playing with ${this.favoriteToy}`;
 }
 
 /* 
   TASK 4
 
-  In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+    In your own words explain the four principles for the "this" keyword below:
+  1. New
+  2. Explicit
+  3. Implicit
+  4. Global? => Window or (strict) Undefined 
 */
 
 
